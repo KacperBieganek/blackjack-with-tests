@@ -7,6 +7,11 @@
 
 
 namespace loader {
+    TextDeckLoader::TextDeckLoader(std::istream &fileStream) : input(fileStream)
+    {
+
+    }
+
     gameCore::Card TextDeckLoader::stringToCard(const std::string &str) {
         if (str == "2")
             return gameCore::Card::C2;
@@ -38,11 +43,11 @@ namespace loader {
             throw std::logic_error{str + "is not a card"};
     }
 
-    std::vector<gameCore::Card> TextDeckLoader::loadDeck(std::istream &fileStream) {
+    std::vector<gameCore::Card> TextDeckLoader::loadDeck() {
         std::vector<gameCore::Card> vec;
         std::string str;
-        while (!fileStream.eof()) {
-            std::getline(fileStream, str, ';');
+        while (!input.eof()) {
+            std::getline(input, str, ';');
             try {
                 str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
                 vec.push_back(stringToCard(str));

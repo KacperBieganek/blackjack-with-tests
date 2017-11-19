@@ -4,22 +4,47 @@
 #include <gmock/gmock.h>
 #include <BlackjackGame.h>
 #include "mock/PlayerMock.h"
+#include <Test/Mock/DeckLoaderMock.h>
 
 namespace blackjack {
     namespace test {
         using namespace testing;
 
+        using PlayerMockType = NiceMock<mock::PlayerMock>;
+        using DeckLoaderMockType = NiceMock<loader::test::mock::DeckLoaderMock>;
+        MATCHER_P(StartPackEq, pack, ""){
+            return arg.firstCroupierCard == pack[0]
+            && arg.secondCroupierCard == pack[1]
+            && arg.firstPlayerCard == pack[2]
+            && arg.secondPlayerCard == pack[3];
+        }
 
         class BlackjackGameTestWithAddedPlayer : public ::testing::Test {
         protected:
             virtual void SetUp() {
-                using PlayerMockType = NiceMock<mock::PlayerMock>;
+
                 player = std::make_shared<PlayerMockType>();
                 sut.addPlayer(player);
+                auto uniqueDeckLoader = std::make_unique<DeckLoaderMockType>();
+                deckLoader = uniqueDeckLoader.get();
+                sut.setDeckLoader(std::move(uniqueDeckLoader));
+
+                std::vector<gameCore::Card> defaultDeck{gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,
+                                                        gameCore::Card::C3,};
+                EXPECT_CALL(*deckLoader,loadDeck()).WillRepeatedly(Return(defaultDeck));
             }
 
             BlackjackGame sut;
-            std::shared_ptr<mock::PlayerMock> player;
+            std::shared_ptr<PlayerMockType> player;
+            DeckLoaderMockType* deckLoader;
         };
 
         TEST(BlackjackGameTest, PassingTest) {
@@ -49,8 +74,13 @@ namespace blackjack {
 
         TEST_F(BlackjackGameTestWithAddedPlayer, GameInformPlayerAboutStartingHand) {
             //given
+            std::vector<gameCore::Card> deck{gameCore::Card::C3,
+            gameCore::Card::C8,
+            gameCore::Card::A,
+            gameCore::Card::K};
+            EXPECT_CALL(*deckLoader,loadDeck()).WillRepeatedly(Return(deck));
             //expected
-            EXPECT_CALL(*player, notifyAboutStartingRound(_));
+            EXPECT_CALL(*player, notifyAboutStartingRound(StartPackEq(deck)));
             //when
             sut.startGame();
         }
@@ -75,16 +105,29 @@ namespace blackjack {
             sut.startGame();
         }
 
-        /*TEST_F(BlackjackGameTestWithAddedPlayer, GameInformsPlayerAboutWinningWhenHeHasBlackjackInStartingHand) {
+
+        TEST(BlackjackGameTestWithAddedPlayerWithoutDeckLoader, GameWillNotStartWithoutDeckLoader) {
+            //given
+            BlackjackGame sut;
+            auto player = std::make_shared<PlayerMockType>();
+            sut.addPlayer(player);
+            //when
+            const auto result = sut.startGame();
+            //expect
+            EXPECT_THAT(result,Eq(false));
+        }
+        /*
+        TEST_F(BlackjackGameTestWithAddedPlayer, GameInformsPlayerAboutWinningWhenHeHasBlackjackInStartingHand) {
             //given
             //expect
             testing::InSequence s;
             EXPECT_CALL(*player, getDecision()).Times(0);
-            EXPECT_CALL(*player,)
+            EXPECT_CALL(*player,onRoundEnd(true));
 
             //when
             sut.startGame();
-        }*/
+        }
+         */
 
 /*
         class BlackjackGameTestWithAddedPlayerAndCroupier : public BlackjackGameTestWithAddedPlayer {

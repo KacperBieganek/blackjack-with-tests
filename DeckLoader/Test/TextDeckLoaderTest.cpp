@@ -28,9 +28,9 @@ namespace loader {
             //given
             std::string EightKings = "K;K;K;K;K;K;K;K;";
             std::stringstream EightKingStream{EightKings};
-            loader::TextDeckLoader sut;
+            loader::TextDeckLoader sut{EightKingStream};
             //when
-            const auto result = sut.loadDeck(EightKingStream);
+            const auto result = sut.loadDeck();
             //expect
             ASSERT_THAT(result.size(), Eq(8));
             EXPECT_THAT(result.at(0), Eq(gameCore::Card::K));
@@ -50,9 +50,9 @@ namespace loader {
             //given
             std::string str = "K;J;AlaMaKota;";
             std::stringstream IncorrectInputStream{str};
-            loader::TextDeckLoader sut;
+            loader::TextDeckLoader sut{IncorrectInputStream};
             //when
-            const auto result = sut.loadDeck(IncorrectInputStream);
+            const auto result = sut.loadDeck();
             //expect
             EXPECT_THAT(result.empty(), Eq(true));
         }
@@ -62,9 +62,9 @@ namespace loader {
             //given
             std::string str = "A;3;7;2;9;Q;5;K;4;8;10;6;J;";
             std::stringstream EveryFigureStream{str};
-            loader::TextDeckLoader sut;
+            loader::TextDeckLoader sut{EveryFigureStream};
             //when
-            const auto result = sut.loadDeck(EveryFigureStream);
+            const auto result = sut.loadDeck();
             //expect
             /*
             EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::A) != result.end(), Eq(true));
@@ -103,9 +103,9 @@ namespace loader {
             //given
             std::string str = "A;3;7;2;9;Q;5;K;4;8;10;6;J                          ;   ;\n;";
             std::stringstream EveryFigureStream{str};
-            loader::TextDeckLoader sut;
+            loader::TextDeckLoader sut{EveryFigureStream};
             //when
-            const auto result = sut.loadDeck(EveryFigureStream);
+            const auto result = sut.loadDeck();
             //expect
             ASSERT_THAT(result.size(), 13);
             EXPECT_THAT(result[0], Eq(gameCore::Card::A));

@@ -7,28 +7,32 @@
 
 
 #include <memory>
+#include <IDeckLoader.h>
 
+namespace loader {
+    class IDeckLoader;
+}
 
 namespace blackjack {
 
     class IPlayer;
 
-    class DeckLoader;
-
     class BlackjackGame {
     public:
-        virtual ~BlackjackGame() = default;
+        BlackjackGame();
 
-        bool addPlayer(std::shared_ptr<IPlayer> player);
+        virtual ~BlackjackGame();
 
-        bool setDeckLoader(std::shared_ptr<DeckLoader> deckLoader);
+        void addPlayer(std::shared_ptr<IPlayer> player);
+
+        void setDeckLoader(std::unique_ptr<loader::IDeckLoader> deckLoader);
 
         bool startGame();
 
     private:
         std::shared_ptr<IPlayer> player;
-        std::shared_ptr<DeckLoader> deckLoader;
-
+        std::unique_ptr<loader::IDeckLoader> deckLoader;
+        std::vector<gameCore::Card> deck;
         void startRound();
     };
 }

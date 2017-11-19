@@ -10,11 +10,14 @@
 namespace loader {
     class TextDeckLoader : public IDeckLoader {
     public:
+        explicit TextDeckLoader(std::istream &fileStream);
         ~TextDeckLoader() override = default;
 
-        std::vector<gameCore::Card> loadDeck(std::istream &fileStream) override;
+        std::vector<gameCore::Card> loadDeck() override;
 
         gameCore::Card stringToCard(const std::string &str);
+    private:
+        std::istream& input;
     };
 }
 #endif //GAMEAPP_TEXTFILELOADER_H

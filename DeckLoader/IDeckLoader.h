@@ -13,9 +13,9 @@
 namespace loader {
     class IDeckLoader {
     public:
-        virtual std::vector<gameCore::Card> loadDeck(std::istream &fileStream) = 0;
-
         virtual ~IDeckLoader() = default;
+
+        virtual std::vector<gameCore::Card> loadDeck() = 0;
     };
 }
 #endif //GAMEAPP_IDECKLOADER_H
