@@ -10,4 +10,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 aux_source_directory(. SRC)
 
-add_library(${LIB_NAME} STATIC ${SRC})
+add_library(${LIB_NAME} STATIC ${SRC} card.h)
