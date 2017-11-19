@@ -10,10 +10,11 @@ include_directories(${gtest_SOURCE_DIR}/include)
 
 # adding SUT includes
 include_directories(${GameCoreLib_SOURCE_DIR})
+include_directories(${DeckLoaderLib_SOURCE_DIR})
 
 aux_source_directory(. SRC)
 
-add_executable(${APP_NAME} ${SRC} BlackjackGameTest.cpp)
+add_executable(${APP_NAME} ${SRC})
 
 target_link_libraries(${APP_NAME} gmock gmock_main)
 target_link_libraries(${APP_NAME} GameCoreLib)

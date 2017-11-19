@@ -6,12 +6,14 @@
 #define GAMEAPP_BLACKJACKGAME_H
 
 
-
 #include <memory>
+
 
 namespace blackjack {
 
     class IPlayer;
+
+    class DeckLoader;
 
     class BlackjackGame {
     public:
@@ -19,10 +21,15 @@ namespace blackjack {
 
         bool addPlayer(std::shared_ptr<IPlayer> player);
 
+        bool setDeckLoader(std::shared_ptr<DeckLoader> deckLoader);
+
         bool startGame();
 
     private:
         std::shared_ptr<IPlayer> player;
+        std::shared_ptr<DeckLoader> deckLoader;
+
+        void startRound();
     };
 }
 

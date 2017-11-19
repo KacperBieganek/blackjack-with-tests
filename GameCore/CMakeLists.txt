@@ -8,6 +8,8 @@ add_subdirectory(test)
 
 set(CMAKE_CXX_STANDARD 14)
 
+include_directories(${DeckLoaderLib_SOURCE_DIR})
+
 aux_source_directory(. SRC)
 
 add_library(${LIB_NAME} STATIC ${SRC})
