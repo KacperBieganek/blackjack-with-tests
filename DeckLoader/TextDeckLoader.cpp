@@ -3,6 +3,8 @@
 //
 
 #include "TextDeckLoader.h"
+#include <algorithm>
+
 
 namespace loader {
     gameCore::Card TextDeckLoader::stringToCard(const std::string &str) {
@@ -38,14 +40,16 @@ namespace loader {
 
     std::vector<gameCore::Card> TextDeckLoader::loadDeck(std::istream &fileStream) {
         std::vector<gameCore::Card> vec;
-        std::string s;
+        std::string str;
         while (!fileStream.eof()) {
-            std::getline(fileStream >> std::ws, s, ';');
+            std::getline(fileStream, str, ';');
             try {
-                vec.push_back(stringToCard(s));
+                str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+                vec.push_back(stringToCard(str));
             } catch (const std::logic_error &) {
-                if (!s.empty())
+                if (!str.empty())
                     return {};
+
             }
         }
 

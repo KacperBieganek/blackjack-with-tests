@@ -99,7 +99,7 @@ namespace loader {
         }
 
 
-        TEST(DeckLoaderTests, TextLoaderCorrectlyIgnoresWhitespaceCharacters) {
+        TEST(DeckLoaderTest, TextLoaderCorrectlyIgnoresWhitespaceCharacters) {
             //given
             std::string str = "A;3;7;2;9;Q;5;K;4;8;10;6;J                          ;   ;\n;";
             std::stringstream EveryFigureStream{str};

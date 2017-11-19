@@ -10,7 +10,6 @@ include_directories(${gmock_SOURCE_DIR}/include)
 include_directories(${gtest_SOURCE_DIR}/include)
 
 include_directories(${DeckLoaderLib_SOURCE_DIR})
-include_directories(${GameCoreLib_SOURCE_DIR})
 
 aux_source_directory(. SRC)
 

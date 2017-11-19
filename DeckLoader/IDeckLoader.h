@@ -7,15 +7,14 @@
 
 #include <vector>
 #include <string>
-#include "../GameCore/card.h"
+#include "card.h"
 #include <istream>
 
-namespace loader
-{
-    class IDeckLoader
-    {
+namespace loader {
+    class IDeckLoader {
     public:
-        virtual std::vector<gameCore::Card> loadDeck(std::istream& fileStream) = 0;
+        virtual std::vector<gameCore::Card> loadDeck(std::istream &fileStream) = 0;
+
         virtual ~IDeckLoader() = default;
     };
 }

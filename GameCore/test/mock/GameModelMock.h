@@ -7,7 +7,6 @@
 
 #include <gmock/gmock.h>
 
-#include "../../IGameModel.h"
 
 namespace oasis
 {

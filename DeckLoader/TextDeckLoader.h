@@ -14,7 +14,7 @@ namespace loader {
 
         std::vector<gameCore::Card> loadDeck(std::istream &fileStream) override;
 
-        gameCore::Card stringToCard(const std::string& str);
+        gameCore::Card stringToCard(const std::string &str);
     };
 }
 #endif //GAMEAPP_TEXTFILELOADER_H

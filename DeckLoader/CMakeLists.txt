@@ -8,8 +8,6 @@ project(${LIB_NAME})
 
 add_subdirectory(Test)
 
-include_directories(${GameCoreLib_SOURCE_DIR})
-
 aux_source_directory(. SRC)
 
 add_library(${LIB_NAME} STATIC ${SRC})
