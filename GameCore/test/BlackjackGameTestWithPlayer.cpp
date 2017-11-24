@@ -116,9 +116,29 @@ namespace blackjack {
             //expect
             EXPECT_THAT(result,Eq(false));
         }
-        /*
+
+
+        TEST_F(BlackjackGameTestWithAddedPlayer, GameCalculatesEachHandsValueCorrectly) {
+            //given
+            std::vector<gameCore::Card> hand {gameCore::Card::C3,
+                                             gameCore::Card::C8};
+            sut.startGame();
+            //when
+            auto const result = sut.calculateCardsValue(hand);
+            //expected
+            EXPECT_THAT(result, Eq(11));
+
+
+        }
+
         TEST_F(BlackjackGameTestWithAddedPlayer, GameInformsPlayerAboutWinningWhenHeHasBlackjackInStartingHand) {
             //given
+
+            std::vector<gameCore::Card> deck{gameCore::Card::C3,
+                                             gameCore::Card::C8,
+                                             gameCore::Card::A,
+                                             gameCore::Card::K};
+            EXPECT_CALL(*deckLoader,loadDeck()).WillRepeatedly(Return(deck));
             //expect
             testing::InSequence s;
             EXPECT_CALL(*player, getDecision()).Times(0);
@@ -127,7 +147,7 @@ namespace blackjack {
             //when
             sut.startGame();
         }
-         */
+
 
 /*
         class BlackjackGameTestWithAddedPlayerAndCroupier : public BlackjackGameTestWithAddedPlayer {

@@ -29,10 +29,16 @@ namespace blackjack {
 
         bool startGame();
 
+        size_t calculateCardsValue(std::vector<gameCore::Card>);
+
+        void prepareForNextRound();
+
     private:
         std::shared_ptr<IPlayer> player;
         std::unique_ptr<loader::IDeckLoader> deckLoader;
         std::vector<gameCore::Card> deck;
+        std::vector<gameCore::Card> playerCards;
+        std::vector<gameCore::Card> dealerCards;
         void startRound();
     };
 }
