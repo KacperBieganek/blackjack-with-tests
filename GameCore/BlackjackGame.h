@@ -15,6 +15,8 @@ namespace loader {
 
 namespace blackjack {
 
+    const size_t blackjack = 21;
+
     class IPlayer;
 
     class BlackjackGame {
@@ -29,9 +31,9 @@ namespace blackjack {
 
         bool startGame();
 
+
         size_t calculateCardsValue(std::vector<gameCore::Card>);
 
-        void prepareForNextRound();
 
     private:
         std::shared_ptr<IPlayer> player;
@@ -39,7 +41,15 @@ namespace blackjack {
         std::vector<gameCore::Card> deck;
         std::vector<gameCore::Card> playerCards;
         std::vector<gameCore::Card> dealerCards;
+        size_t playerScore;
+        size_t croupierScore;
+
         void startRound();
+
+        void playRound();
+
+        void prepareForNextRound();
+        void giveAwayACard(std::vector<gameCore::Card>& receiver);
     };
 }
 

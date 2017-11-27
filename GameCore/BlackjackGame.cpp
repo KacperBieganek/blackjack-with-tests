@@ -4,7 +4,6 @@
 
 #include "BlackjackGame.h"
 #include "IPlayer.h"
-#include <IDeckLoader.h>
 
 namespace blackjack {
     BlackjackGame::BlackjackGame() = default;
@@ -12,33 +11,50 @@ namespace blackjack {
     BlackjackGame::~BlackjackGame() = default;
 
     bool BlackjackGame::startGame() {
+        const size_t minimalAmountOfCardsNeededToPlayRound = 4;
+        playerScore = 0;
+        croupierScore = 0;
         if (!this->player || !this->deckLoader) {
             return false;
         }
         deck = deckLoader->loadDeck();
-        startRound();
-        //prepareForNextRound();
+        while (deck.size() >= minimalAmountOfCardsNeededToPlayRound) {
+            startRound();
+            if (calculateCardsValue(playerCards) == blackjack) {
+                player->onRoundEnd(true);
+                prepareForNextRound();
+                continue;
+            }
+            playRound();
+
+        }
         return true;
     }
 
     void BlackjackGame::startRound() {
-        const size_t blackjack = 21;
-        dealerCards.push_back(deck[0]);
-        dealerCards.push_back(deck[1]);
-        playerCards.push_back(deck[2]);
-        playerCards.push_back(deck[3]);
-        player->notifyAboutStartingRound(StartingPack{deck[0], deck[1], deck[2], deck[3]});
-        if(calculateCardsValue(playerCards)==blackjack){
-            player->onRoundEnd(true);
-            return;
-        }
 
+        giveAwayACard(dealerCards);
+        giveAwayACard(dealerCards);
+        giveAwayACard(playerCards);
+        giveAwayACard(playerCards);
+        player->notifyAboutStartingRound(StartingPack{dealerCards[0], dealerCards[1], playerCards[0], playerCards[1]});
+
+
+    }
+
+    void BlackjackGame::playRound() {
         while (player->getDecision()) {
             player->acceptCard(gameCore::Card::A);
         }
         //player->informAboutCroupierCard(gameCore::Card::C2);
 
         player->onRoundEnd(true);
+    }
+
+    void BlackjackGame::giveAwayACard(std::vector<gameCore::Card>& receiver) {
+        const size_t numberOfCardsGivenAway=1;
+        receiver.push_back(deck[0]);
+        deck.erase(deck.begin(), deck.begin() + numberOfCardsGivenAway);
     }
 
     void BlackjackGame::prepareForNextRound() {
@@ -56,7 +72,8 @@ namespace blackjack {
 
     size_t BlackjackGame::calculateCardsValue(std::vector<gameCore::Card> hand) {
         size_t result = 0;
-        size_t aceCounter = 0;
+        bool hasAce = false;
+        const size_t aceValueDiffrence = 10;
         for (size_t i = 0; i < hand.size(); i++) {
             if (hand[i] == gameCore::Card::C2)
                 result += 2;
@@ -83,17 +100,17 @@ namespace blackjack {
             else if (hand[i] == gameCore::Card::K)
                 result += 10;
             else {
-                result += 11;
-                ++aceCounter;
+                result += 1;
+                hasAce = true;
             }
         }
 
-        while (aceCounter && result > 21) {
-            result -= 10;
-            --aceCounter;
-        };
+        if (hasAce && result <= (blackjack - aceValueDiffrence)) {
+            result += aceValueDiffrence;
+        }
 
         return result;
 
     }
+
 }

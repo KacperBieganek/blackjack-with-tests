@@ -12,11 +12,12 @@ namespace blackjack {
 
         using PlayerMockType = NiceMock<mock::PlayerMock>;
         using DeckLoaderMockType = NiceMock<loader::test::mock::DeckLoaderMock>;
-        MATCHER_P(StartPackEq, pack, ""){
+
+        MATCHER_P(StartPackEq, pack, "") {
             return arg.firstCroupierCard == pack[0]
-            && arg.secondCroupierCard == pack[1]
-            && arg.firstPlayerCard == pack[2]
-            && arg.secondPlayerCard == pack[3];
+                   && arg.secondCroupierCard == pack[1]
+                   && arg.firstPlayerCard == pack[2]
+                   && arg.secondPlayerCard == pack[3];
         }
 
         class BlackjackGameTestWithAddedPlayer : public ::testing::Test {
@@ -33,18 +34,13 @@ namespace blackjack {
                                                         gameCore::Card::C3,
                                                         gameCore::Card::C3,
                                                         gameCore::Card::C3,
-                                                        gameCore::Card::C3,
-                                                        gameCore::Card::C3,
-                                                        gameCore::Card::C3,
-                                                        gameCore::Card::C3,
-                                                        gameCore::Card::C3,
-                                                        gameCore::Card::C3,};
-                EXPECT_CALL(*deckLoader,loadDeck()).WillRepeatedly(Return(defaultDeck));
+                                                        gameCore::Card::C3};
+                EXPECT_CALL(*deckLoader, loadDeck()).WillRepeatedly(Return(defaultDeck));
             }
 
             BlackjackGame sut;
             std::shared_ptr<PlayerMockType> player;
-            DeckLoaderMockType* deckLoader;
+            DeckLoaderMockType *deckLoader;
         };
 
         TEST(BlackjackGameTest, PassingTest) {
@@ -75,10 +71,10 @@ namespace blackjack {
         TEST_F(BlackjackGameTestWithAddedPlayer, GameInformPlayerAboutStartingHand) {
             //given
             std::vector<gameCore::Card> deck{gameCore::Card::C3,
-            gameCore::Card::C8,
-            gameCore::Card::A,
-            gameCore::Card::K};
-            EXPECT_CALL(*deckLoader,loadDeck()).WillRepeatedly(Return(deck));
+                                             gameCore::Card::C8,
+                                             gameCore::Card::A,
+                                             gameCore::Card::K};
+            EXPECT_CALL(*deckLoader, loadDeck()).WillRepeatedly(Return(deck));
             //expected
             EXPECT_CALL(*player, notifyAboutStartingRound(StartPackEq(deck)));
             //when
@@ -114,19 +110,34 @@ namespace blackjack {
             //when
             const auto result = sut.startGame();
             //expect
-            EXPECT_THAT(result,Eq(false));
+            EXPECT_THAT(result, Eq(false));
         }
 
 
-        TEST_F(BlackjackGameTestWithAddedPlayer, GameCalculatesEachHandsValueCorrectly) {
+        TEST_F(BlackjackGameTestWithAddedPlayer, GameCalculatesCorreclyValuesOfHandMadeOfAceAndKing) {
             //given
-            std::vector<gameCore::Card> hand {gameCore::Card::C3,
-                                             gameCore::Card::C8};
+            std::vector<gameCore::Card> hand{gameCore::Card::A,
+                                             gameCore::Card::K};
             sut.startGame();
             //when
             auto const result = sut.calculateCardsValue(hand);
             //expected
-            EXPECT_THAT(result, Eq(11));
+            EXPECT_THAT(result, Eq(21));
+
+
+        }
+
+
+        TEST_F(BlackjackGameTestWithAddedPlayer, GameCalculatesCorreclyValuesOfHandMadeOfThreeAces) {
+            //given
+            std::vector<gameCore::Card> hand{gameCore::Card::A,
+                                             gameCore::Card::A,
+                                             gameCore::Card::A};
+            sut.startGame();
+            //when
+            auto const result = sut.calculateCardsValue(hand);
+            //expected
+            EXPECT_THAT(result, Eq(13));
 
 
         }
@@ -138,11 +149,11 @@ namespace blackjack {
                                              gameCore::Card::C8,
                                              gameCore::Card::A,
                                              gameCore::Card::K};
-            EXPECT_CALL(*deckLoader,loadDeck()).WillRepeatedly(Return(deck));
+            EXPECT_CALL(*deckLoader, loadDeck()).WillRepeatedly(Return(deck));
             //expect
             testing::InSequence s;
             EXPECT_CALL(*player, getDecision()).Times(0);
-            EXPECT_CALL(*player,onRoundEnd(true));
+            EXPECT_CALL(*player, onRoundEnd(true));
 
             //when
             sut.startGame();
