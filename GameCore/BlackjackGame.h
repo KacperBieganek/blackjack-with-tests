@@ -20,6 +20,8 @@ namespace blackjack {
     class IPlayer;
 
     class BlackjackGame {
+
+
     public:
         BlackjackGame();
 
@@ -31,16 +33,14 @@ namespace blackjack {
 
         bool startGame();
 
-
-        size_t calculateCardsValue(std::vector<gameCore::Card>);
-
+        static size_t calculateCardsValue(std::vector<gameCore::Card>);
 
     private:
         std::shared_ptr<IPlayer> player;
         std::unique_ptr<loader::IDeckLoader> deckLoader;
         std::vector<gameCore::Card> deck;
         std::vector<gameCore::Card> playerCards;
-        std::vector<gameCore::Card> dealerCards;
+        std::vector<gameCore::Card> croupierCards;
         size_t playerScore;
         size_t croupierScore;
 
@@ -49,7 +49,12 @@ namespace blackjack {
         void playRound();
 
         void prepareForNextRound();
-        void giveAwayACard(std::vector<gameCore::Card>& receiver);
+
+        void giveAwayACard(std::vector<gameCore::Card> &receiver);
+
+        void printCurrentRoundInfo(bool playerWon);
+
+        std::string cardToString(gameCore::Card card);
     };
 }
 

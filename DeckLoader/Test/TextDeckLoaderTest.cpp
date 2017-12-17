@@ -15,9 +15,9 @@ namespace loader {
         TEST(DeckLoaderTest, TextLoaderReturnEmptyStackWhenEmptyStreamIsGiven) {
             //given
             std::stringstream emptySteam;
-            loader::TextDeckLoader sut;
+            loader::TextDeckLoader sut{emptySteam};
             //when
-            const auto result = sut.loadDeck(emptySteam);
+            const auto result = sut.loadDeck();
 
             //expect
             EXPECT_THAT(result.empty(), Eq(true));
@@ -65,22 +65,7 @@ namespace loader {
             loader::TextDeckLoader sut{EveryFigureStream};
             //when
             const auto result = sut.loadDeck();
-            //expect
-            /*
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::A) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C2) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C3) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C4) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C5) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C6) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C7) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C8) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C9) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::C10) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::J) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::Q) != result.end(), Eq(true));
-            EXPECT_THAT(std::find(result.begin(), result.end(), gameCore::Card::K) != result.end(), Eq(true));
-        */
+
             ASSERT_THAT(result.size(), 13);
             EXPECT_THAT(result[0], Eq(gameCore::Card::A));
             EXPECT_THAT(result[1], Eq(gameCore::Card::C3));

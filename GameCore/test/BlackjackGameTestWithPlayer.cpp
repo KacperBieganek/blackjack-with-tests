@@ -160,7 +160,7 @@ namespace blackjack {
         }
 
 
-/*
+
         class BlackjackGameTestWithAddedPlayerAndCroupier : public BlackjackGameTestWithAddedPlayer {
         protected:
             virtual void SetUp() {
@@ -178,6 +178,49 @@ namespace blackjack {
             //when
             sut.startGame();
       }
-*/
+
+
+        TEST_F(BlackjackGameTestWithAddedPlayerAndCroupier, GameInformsPlayerAboutWinningWhenHisCardScoreIsHigherThenCroupiers) {
+            //given
+            std::vector<gameCore::Card> deck{gameCore::Card::C9,
+                                             gameCore::Card::C9,
+                                             gameCore::Card::A,
+                                             gameCore::Card::C9};
+            EXPECT_CALL(*deckLoader, loadDeck()).WillRepeatedly(Return(deck));
+            //expect
+            testing::InSequence s;
+            EXPECT_CALL(*player, notifyAboutStartingRound(_));
+            EXPECT_CALL(*player, getDecision()).WillOnce(Return(false));
+            EXPECT_CALL(*player, onRoundEnd(true));
+
+            //when
+            sut.startGame();
+
+        }
+
+
+        TEST_F(BlackjackGameTestWithAddedPlayerAndCroupier, PlayerIsNotAskedAboutDecisionAfterHeBusts) {
+            //given
+            std::vector<gameCore::Card> deck{gameCore::Card::C9,
+                                             gameCore::Card::C6,
+                                             gameCore::Card::C9,
+                                             gameCore::Card::C9,
+                                             gameCore::Card::C9,
+                                             gameCore::Card::C9};
+            EXPECT_CALL(*deckLoader, loadDeck()).WillRepeatedly(Return(deck));
+            //expect
+            testing::InSequence s;
+            EXPECT_CALL(*player, notifyAboutStartingRound(_));
+            EXPECT_CALL(*player,getDecision()).WillOnce(Return(true));
+            EXPECT_CALL(*player, onRoundEnd(false));
+
+            //when
+            sut.startGame();
+        }
+        TEST_F(BlackjackGameTestWithAddedPlayerAndCroupier, GamePrintsInfoAfterEachRound){
+            //given
+            //expect
+
+        }
     }
 }

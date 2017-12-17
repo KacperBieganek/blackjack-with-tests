@@ -5,6 +5,7 @@ set(LIB_NAME GameCoreLib)
 project(${LIB_NAME})
 
 add_subdirectory(test)
+add_subdirectory(SafeplayerTest)
 
 set(CMAKE_CXX_STANDARD 14)
 

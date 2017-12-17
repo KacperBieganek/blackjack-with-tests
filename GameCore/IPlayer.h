@@ -5,7 +5,7 @@
 #ifndef GAMEAPP_IPLAYER_H
 #define GAMEAPP_IPLAYER_H
 
-#include <card.h>
+#include "../DeckLoader/card.h"
 
 namespace blackjack {
 
@@ -29,7 +29,9 @@ namespace blackjack {
         virtual void informAboutCroupierCard(gameCore::Card croupierCard) = 0;
 
         virtual void onRoundEnd(bool playerWon) = 0;
+
     };
 
 }
+
 #endif //GAMEAPP_IPLAYER_H
