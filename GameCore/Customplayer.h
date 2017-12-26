@@ -2,17 +2,15 @@
 // Created by kacper on 17.12.17.
 //
 
-#ifndef GAMEAPP_SAFEPLAYER_H
-#define GAMEAPP_SAFEPLAYER_H
+#ifndef GAMEAPP_CUSTOMPLAYER_H
+#define GAMEAPP_CUSTOMPLAYER_H
 
 #include <vector>
 #include "IPlayer.h"
 
-
 namespace blackjack {
-
-    class Safeplayer : public IPlayer {
-
+    class Customplayer : public IPlayer {
+    public:
         void notifyAboutStartingRound(const StartingPack &cards) override;
 
         bool getDecision() override;
@@ -26,14 +24,15 @@ namespace blackjack {
         void informPlayerAboutHisHandValue(size_t score) override;
 
         void informPlayerAboutCroupierHandValue(size_t score) override;
-        
-        std::vector<gameCore::Card> getPlayerCards() override;
 
+        std::vector<gameCore::Card> getPlayerCards() override;
 
     private:
         std::vector<gameCore::Card> playerCards;
-        size_t playerHandValue = 0;
+        std::vector<gameCore::Card> croupierCards;
+        size_t playerHandValue;
+        size_t croupierHandValue;
     };
-
 }
-#endif //GAMEAPP_SAFEPLAYER_H
+
+#endif //GAMEAPP_CUSTOMPLAYER_H

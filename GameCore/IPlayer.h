@@ -30,6 +30,16 @@ namespace blackjack {
 
         virtual void onRoundEnd(bool playerWon) = 0;
 
+        virtual void informPlayerAboutHisHandValue(size_t score) = 0;
+
+        virtual void informPlayerAboutCroupierHandValue(size_t score) = 0;
+
+        virtual std::vector<gameCore::Card> getPlayerCards() = 0;
+
+        std::vector<gameCore::Card> playerCards;
+        std::vector<gameCore::Card> croupierCards;
+        size_t playerHandValue;
+        size_t croupierHandValue;
     };
 
 }
