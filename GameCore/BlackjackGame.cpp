@@ -124,23 +124,32 @@ namespace blackjack {
         giveAwayACard(playerCards);
         player->notifyAboutStartingRound(
                 StartingPack{croupierCards[0], croupierCards[1], playerCards[0], playerCards[1]});
+        player->informPlayerAboutCroupierHandValue(calculateCardsValue(croupierCards));
+        player->informPlayerAboutHisHandValue(calculateCardsValue(playerCards));
 
 
     }
 
     void BlackjackGame::playRound() {
         const size_t emptyDeckSize = 0;
-        while (calculateCardsValue(playerCards) < blackjack && player->getDecision() && deck.size() > emptyDeckSize) {
+        size_t playerHandValue = 0;
+        size_t croupierHandValue = 0;
+        while (playerHandValue < blackjack && player->getDecision() && deck.size() > emptyDeckSize) {
             giveAwayACard(playerCards);
             player->acceptCard(playerCards.back());
+            playerHandValue=calculateCardsValue(playerCards);
+            player->informPlayerAboutHisHandValue(playerHandValue);
         }
         /*Player has busted,therefore round ends*/
-        if (calculateCardsValue(playerCards) > blackjack)
+        if (playerHandValue > blackjack)
             return;
 
-        while (calculateCardsValue(croupierCards) < 17 && deck.size() > emptyDeckSize) {
+        while (croupierHandValue < 17 && deck.size() > emptyDeckSize) {
             giveAwayACard(croupierCards);
             player->informAboutCroupierCard(croupierCards.back());
+            croupierHandValue = calculateCardsValue(croupierCards);
+            player->informPlayerAboutCroupierHandValue(croupierHandValue);
+
         }
     }
 

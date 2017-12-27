@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-int main()
+int main(int argc,char** argv)
 {
     std::cout << "I am game application" << std::endl;
     return 0;

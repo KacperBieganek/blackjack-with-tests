@@ -33,7 +33,7 @@ namespace blackjack {
 
         bool startGame();
 
-        static size_t calculateCardsValue(std::vector<gameCore::Card>);
+        size_t calculateCardsValue(std::vector<gameCore::Card>);
 
     private:
         std::shared_ptr<IPlayer> player;

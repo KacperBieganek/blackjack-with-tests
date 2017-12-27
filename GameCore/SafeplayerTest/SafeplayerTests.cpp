@@ -20,8 +20,30 @@ namespace blackjack {
         };
 
 
-        TEST_F(SafeplayerTests, GetDecisionRetunsFalseAsDefault) {
+
+
+        TEST_F(SafeplayerTests, GetDecisionReturnsTrueIfPlayerHandValueIsLessThan12) {
             //given
+            StartingPack pack = {gameCore::Card::C3,
+                                 gameCore::Card::C8,
+                                 gameCore::Card::C5,
+                                 gameCore::Card::C6};
+            player->notifyAboutStartingRound(pack);
+            player->informPlayerAboutHisHandValue(11);
+            //when
+            const auto result = player->getDecision();
+            //expected
+            EXPECT_EQ(result,true);
+        }
+
+        TEST_F(SafeplayerTests, GetDecisionReturnsTrueIfPlayerHandValueIsEqualOrBiggerThan12) {
+            //given
+            StartingPack pack = {gameCore::Card::C3,
+                                 gameCore::Card::C8,
+                                 gameCore::Card::C6,
+                                 gameCore::Card::C6};
+            player->notifyAboutStartingRound(pack);
+            player->informPlayerAboutHisHandValue(12);
             //when
             const auto result = player->getDecision();
             //expected
