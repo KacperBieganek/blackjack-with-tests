@@ -20,6 +20,9 @@ namespace blackjack {
                 MOCK_METHOD1(acceptCard, void(gameCore::Card));
                 MOCK_METHOD1(informAboutCroupierCard,void(gameCore::Card));
                 MOCK_METHOD1(onRoundEnd,void(bool));
+                MOCK_METHOD1(informPlayerAboutHisHandValue,void(size_t));
+                MOCK_METHOD1(informPlayerAboutCroupierHandValue,void(size_t));
+                MOCK_METHOD0(getPlayerCards,std::vector<gameCore::Card>());
             };
         }
     }
