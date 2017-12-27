@@ -21,7 +21,7 @@ namespace blackjack {
         deck = std::move(deckLoader->loadDeck());
         while (deck.size() >= minimalAmountOfCardsNeededToPlayRound) {
             startRound();
-            if (calculateCardsValue(playerCards) == blackjack) {
+            if (calculateCardsValue(playerCards) == blackjackValue) {
                 player->onRoundEnd(true);
                 ++playerScore;
                 printCurrentRoundInfo(true);
@@ -31,11 +31,11 @@ namespace blackjack {
                 playRound();
 
 
-                if (calculateCardsValue(playerCards) > blackjack) {
+                if (calculateCardsValue(playerCards) > blackjackValue) {
                     ++croupierScore;
                     player->onRoundEnd(false);
                     printCurrentRoundInfo(false);
-                } else if (calculateCardsValue(croupierCards) > blackjack) {
+                } else if (calculateCardsValue(croupierCards) > blackjackValue) {
                     ++playerScore;
                     player->onRoundEnd(true);
                     printCurrentRoundInfo(true);
@@ -134,14 +134,14 @@ namespace blackjack {
         const size_t emptyDeckSize = 0;
         size_t playerHandValue = 0;
         size_t croupierHandValue = 0;
-        while (playerHandValue < blackjack && player->getDecision() && deck.size() > emptyDeckSize) {
+        while (playerHandValue < blackjackValue && player->getDecision() && deck.size() > emptyDeckSize) {
             giveAwayACard(playerCards);
             player->acceptCard(playerCards.back());
             playerHandValue=calculateCardsValue(playerCards);
             player->informPlayerAboutHisHandValue(playerHandValue);
         }
         /*Player has busted,therefore round ends*/
-        if (playerHandValue > blackjack)
+        if (playerHandValue > blackjackValue)
             return;
 
         while (croupierHandValue < 17 && deck.size() > emptyDeckSize) {
@@ -207,7 +207,7 @@ namespace blackjack {
             }
         }
 
-        if (hasAce && result <= (blackjack - aceValueDiffrence)) {
+        if (hasAce && result <= (blackjackValue - aceValueDiffrence)) {
             result += aceValueDiffrence;
         }
 

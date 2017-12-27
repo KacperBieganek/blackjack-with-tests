@@ -3,6 +3,7 @@
 //
 
 #include "Customplayer.h"
+#include "BlackjackGame.h"
 
 namespace blackjack {
     void Customplayer::notifyAboutStartingRound(const StartingPack &cards) {
@@ -19,9 +20,13 @@ namespace blackjack {
 
     bool Customplayer::getDecision() {
         const size_t croupierStandValue = 17;
-        if(playerHandValue>croupierHandValue && croupierHandValue>= croupierStandValue){
+        const size_t HighestStrictCardValue = 10;
+        if(playerHandValue<=blackjack::blackjackValue-HighestStrictCardValue){
+            return true;
+        }
+        if(croupierHandValue>= croupierStandValue && playerHandValue>croupierHandValue){
             return false;
-        }else if(playerHandValue<croupierStandValue && croupierHandValue>croupierStandValue){
+        }else if(croupierHandValue>=croupierStandValue && playerHandValue<=croupierHandValue){
             return true;
         }
         return false;

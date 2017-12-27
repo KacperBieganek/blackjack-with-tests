@@ -51,6 +51,7 @@ namespace blackjack {
                                  gameCore::Card::C6,
                                  gameCore::Card::C6};
             player->notifyAboutStartingRound(packFirstRound);
+            player->acceptCard(gameCore::Card::K);
             player->onRoundEnd(false);
             StartingPack packSecondRound = {gameCore::Card::C8,
                                  gameCore::Card::Q,
@@ -118,6 +119,28 @@ namespace blackjack {
 
             //expected
             EXPECT_EQ(result,false);
+        }
+
+
+        TEST_F(CustomplayerTests, PlayerAlwaysDrawsWhenHisScoreIsEqualToCroupiers) {
+            //given
+            player->informPlayerAboutHisHandValue(20);
+            player->informPlayerAboutCroupierHandValue(20);
+            //when
+            const auto result = player->getDecision();
+            //expect
+            EXPECT_EQ(result,true);
+        }
+
+
+        TEST_F(CustomplayerTests, PlayerAlwaysDrawsWhenThereIsNoRiskOfBusting) {
+            //given
+            player->informPlayerAboutHisHandValue(10);
+            player->informPlayerAboutCroupierHandValue(10);
+            //when
+            const auto result = player->getDecision();
+            //expect
+            EXPECT_EQ(result,true);
         }
     }
 }

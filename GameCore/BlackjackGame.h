@@ -15,7 +15,7 @@ namespace loader {
 
 namespace blackjack {
 
-    const size_t blackjack = 21;
+    const size_t blackjackValue = 21;
 
     class IPlayer;
 
