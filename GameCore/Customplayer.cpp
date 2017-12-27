@@ -6,6 +6,10 @@
 
 namespace blackjack {
     void Customplayer::notifyAboutStartingRound(const StartingPack &cards) {
+        croupierCards.push_back(cards.firstCroupierCard);
+        croupierCards.push_back(cards.secondCroupierCard);
+        playerCards.push_back(cards.firstPlayerCard);
+        playerCards.push_back(cards.secondPlayerCard);
 
     }
 

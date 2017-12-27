@@ -27,6 +27,8 @@ namespace blackjack {
 
         std::vector<gameCore::Card> getPlayerCards() override;
 
+        ~Customplayer() override = default;
+
     private:
         std::vector<gameCore::Card> playerCards;
         std::vector<gameCore::Card> croupierCards;

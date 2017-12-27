@@ -217,10 +217,6 @@ namespace blackjack {
             //when
             sut.startGame();
         }
-        TEST_F(BlackjackGameTestWithAddedPlayerAndCroupier, GamePrintsInfoAfterEachRound){
-            //given
-            //expect
 
-        }
     }
 }

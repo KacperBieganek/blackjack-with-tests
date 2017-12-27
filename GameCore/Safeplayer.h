@@ -13,6 +13,7 @@ namespace blackjack {
 
     class Safeplayer : public IPlayer {
 
+    public:
         void notifyAboutStartingRound(const StartingPack &cards) override;
 
         bool getDecision() override;
@@ -26,9 +27,10 @@ namespace blackjack {
         void informPlayerAboutHisHandValue(size_t score) override;
 
         void informPlayerAboutCroupierHandValue(size_t score) override;
-        
+
         std::vector<gameCore::Card> getPlayerCards() override;
 
+        ~Safeplayer() override = default;
 
     private:
         std::vector<gameCore::Card> playerCards;
